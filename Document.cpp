@@ -29,50 +29,46 @@ string Document::getContents() const
     return mContents;
 }
 
-bool Document::getTerm(const string& sTerm, Term*& returnTerm)
-{
-    for (auto vectorIterator = mTermsVector.begin(); vectorIterator != mTermsVector.end(); ++vectorIterator)
-    {
-        if (vectorIterator->getKeyword() == sTerm)
-        {
-            returnTerm = &(*vectorIterator);
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void Document::createTerm()
 {
-    vector<string> keywords;
-
-    // 개행문자를 제거 한다
-    std::string clearContents = Utils::ReplaceAll(getContents(), "\n", "");
+    // 특수 문자 및 개행 문자 등을 제거 한다
+    std::string clearContents = Utils::RemoveSpecialCharacter(getContents());
 
     // Tokenize
-    Utils::Tokenize(clearContents, keywords, SEPARATOR);
+    vector<string> keywords = Utils::Tokenize(clearContents);
 
     for (int i = 0; i < keywords.size(); i++)
     {
         string keyword = keywords[i];
 
-        Term* createdTerm = nullptr;
+        auto mapIterator = mTermsMap.find(keyword);
 
-        if (!getTerm(keyword, createdTerm))
+        if (mapIterator == mTermsMap.end())
         {
             // 새로운 Term 을 생성한다
-            mTermsVector.push_back(Term(keyword, i));
+            mTermsMap.insert(std::make_pair(keyword, Term(keyword)));
         }
         else
         {
-            // 기존의 Term 의 Frequency 값을 1 증가한다.
-            createdTerm->increaseFrequency(1);
+            // 이미 존재하는 Term 이므로, 기존의 Term 의 Frequency 값을 1 증가한다.
+            mapIterator->second.increaseFrequency(1);
         }
     }
 }
 
-vector<Term>& Document::getTerms()
+Term* Document::getTerm(const string& keyword)
 {
-    return mTermsVector;
+    auto mapIterator = mTermsMap.find(keyword);
+
+    if (mapIterator == mTermsMap.end())
+    {
+        return nullptr;
+    }
+
+    return &(mapIterator->second);
+}
+
+std::map<std::string, Term>* Document::getTerms()
+{
+    return &mTermsMap;
 }

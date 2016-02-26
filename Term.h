@@ -1,9 +1,6 @@
-//
-// Created by woodavid on 2016. 2. 23..
-//
 
-#ifndef TERM_H
-#define TERM_H
+#ifndef __TERM_H__
+#define __TERM_H__
 
 #include <string>
 #include <vector>
@@ -12,10 +9,6 @@ using namespace std;
 
 class Term
 {
-protected:
-    string mKeyword;
-    int mFrequency;
-    vector<int> mOffsets;
 
 public:
     Term(string keyword);
@@ -27,7 +20,12 @@ public:
     vector<int> getOffsets() const;
     void setOffset(int offset);
     void addOffset(int offset);
+
+protected:
+    string mKeyword;
+    int mFrequency;
+    vector<int> mOffsets;
+
 };
 
-
-#endif //TERM_H
+#endif //__TERM_H__

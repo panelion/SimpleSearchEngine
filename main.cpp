@@ -33,7 +33,7 @@ int main() {
 
         cout << "Input your command number." << endl;
         cin >> commandNumber;
-        cin.ignore(1, '\n');
+        cin.ignore();
 
         if (cin.good())
         {
@@ -52,6 +52,14 @@ int main() {
                     cout << "Wrong command. Please input correct command." << endl;
                     break;
             }
+
+            cin.clear();
+        }
+        else
+        {
+            cout << "Wrong command. Please input correct command." << endl;
+            cin.clear();
+            cin.ignore();
         }
     }
 
@@ -68,7 +76,7 @@ void CommandInputDocument(SearchEngine& engine)
     {
         if (strDocumentID.empty())
         {
-            cout << "Input Document ID : (Integer) " << endl;
+            cout << "Input Document ID : (Number) " << endl;
 
             while (getline(cin, strDocumentID))
             {
@@ -83,7 +91,7 @@ void CommandInputDocument(SearchEngine& engine)
                     }
                 }
 
-                std::cout << "You can input only integer type." << std::endl;
+                std::cout << "You can input only number type. please retry : " << std::endl;
             }
         }
 
@@ -91,8 +99,8 @@ void CommandInputDocument(SearchEngine& engine)
         {
             cout << "Input Document Contents : (string) " << endl;
             getline(cin, documentContents);
-            cin.ignore(1, '\n');
             cin.clear();
+            cin.ignore();
         }
     }
 

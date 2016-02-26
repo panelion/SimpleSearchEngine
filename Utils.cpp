@@ -1,47 +1,26 @@
-//
-// Created by woodavid on 2016. 2. 26..
-//
 
 #include "Utils.h"
-#include <iostream>
 
 
-/**
- * 주어진 문자열에 대해 delimiters 를 이용하여 Vector<string> 형식으로 Tokenize 한다
- *
- * @param string: Tokenize 를 하기 위한 원본 문자열
- * @param vector<string>
- */
-void Utils::Tokenize(const string& str, vector<string>& tokens, const string& delimiters)
+std::vector<std::string> Utils::Tokenize(const std::string& str)
 {
-    // delimiter 로 시작 하는 경우를 방지 한다
-    string::size_type startPosition = str.find_first_not_of(delimiters, 0);
-    string::size_type nextPosition = str.find_first_of(delimiters, startPosition);
+    /**
+     * 공백을 기준으로 query 문자열을 분리하여 vector 에 저장한다.
+     */
+    std::vector<std::string> tokens;
+    std::string temp;
+    istringstream iss(str);
 
-    while (string::npos != nextPosition || string::npos != startPosition)
+    while (!iss.eof())
     {
-        string word = str.substr(startPosition, nextPosition - startPosition);
-
-        if (!word.empty() || word != "\n")
-        {
-            tokens.push_back(str.substr(startPosition, nextPosition - startPosition));
-        }
-
-        startPosition = str.find_first_not_of(delimiters, nextPosition);
-        nextPosition = str.find_first_of(delimiters, startPosition);
+        iss >> temp;
+        tokens.push_back(temp);
     }
+
+    return tokens;
 }
 
 
-/**
- * 문자열에서 해당되는 Pattern 을 Replace 문자로 대체 한다
- *
- * @param string str: 문자열
- * @param string pattern: 문자열에서 치환해야할 문자
- * @param string replace: 치환해야할 부분의 대체 문자.
- *
- * @return string: 대체된 문자열
- */
 string Utils::ReplaceAll(const string &str, const string &pattern, const string &replace)
 {
     string result = str;
@@ -56,6 +35,7 @@ string Utils::ReplaceAll(const string &str, const string &pattern, const string 
 
     return result;
 }
+
 
 std::string Utils::RemoveSpecialCharacter(const std::string &str)
 {
@@ -86,12 +66,11 @@ std::string Utils::RemoveSpecialCharacter(const std::string &str)
         }
     }
 
-    std::cout << temp << endl;
-
     return temp;
 }
 
-static std::string Utils::ToLowerCase(const std::string& str)
+
+std::string Utils::ToLowerCase(const std::string& str)
 {
     std::string data = str;
     std::transform(data.begin(), data.end(), data.begin(), ::tolower);

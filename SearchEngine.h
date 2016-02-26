@@ -1,9 +1,5 @@
-//
-// Created by woodavid on 2016. 2. 24..
-//
-
-#ifndef SEARCHENGINE_H
-#define SEARCHENGINE_H
+#ifndef __SEARCHENGINE_H__
+#define __SEARCHENGINE_H__
 
 #include <map>
 #include <string>
@@ -12,12 +8,33 @@
 #include "Document.h"
 #include "QueryParser.h"
 
-class SearchEngine {
+/**
+ *
+ */
+class SearchEngine
+{
+
 public:
+    /**
+     * Constructor
+     */
     SearchEngine();
+
+    /**
+     * Destructor
+     */
     ~SearchEngine();
+
+    /**
+     * Document 를 저장한다. 저장된 Document 객체를 토대로 Index 를 구성한다.
+     */
     bool addDocument(uint64_t, const string& documentContents);
+
+    /**
+     * 검색어를 입력 받아 결과를 조회 한다
+     */
     bool search(const string& query);
+
     std::vector<uint64_t> getResult() const;
 
 protected:
@@ -31,4 +48,4 @@ protected:
     vector<Document> getDocuments(vector<uint64_t>& documentIds);
 };
 
-#endif //SEARCHENGINE_H
+#endif //__SEARCHENGINE_H__

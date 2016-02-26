@@ -1,13 +1,9 @@
-//
-// Created by woodavid on 2016. 2. 24..
-//
 
 #include "SearchEngine.h"
 
-SearchEngine::SearchEngine()
+SearchEngine::SearchEngine(): mIndexer(), mQueryParser()
 {
-    mIndexer = Indexer();
-    mQueryParser = QueryParser();
+
 }
 
 SearchEngine::~SearchEngine()
@@ -21,18 +17,19 @@ bool SearchEngine::addDocument(uint64_t documentId, const string& documentConten
 
     if (mapIterator == mDocumentsMap.end())
     {
+        // TODO: Document Content 의 크기가 큰 경우, memory 에 부하가 생길 수 있으므로, 원본 데이터의 경우, 별도로 저장하는 것이 좋음.
         Document newDocument = Document(documentId, documentContents);
 
-        // Save to Document Map.
+        // Save Document to Map.
         mDocumentsMap.insert(std::make_pair(newDocument.getId(), newDocument));
 
         // 새로이 생성된 Document 객체로 부터 Terms 를 받아 Indexing 한다
-        std::vector<Term> terms = newDocument.getTerms();
+        std::map<std::string, Term>* termsMap = newDocument.getTerms();
 
-        for (auto vectorIterator = terms.begin(); vectorIterator != terms.end(); ++vectorIterator)
+        for (auto termsIterator = termsMap->begin(); termsIterator != termsMap->end(); ++termsIterator)
         {
-            Term term = *vectorIterator;
-            mIndexer.insertKeyword(term.getKeyword(), newDocument.getId());
+            // Term term = termsIterator->second;
+            mIndexer.insertKeyword(termsIterator->first, newDocument.getId());
         }
 
         return true;

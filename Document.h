@@ -1,12 +1,10 @@
-//
-// Created by woodavid on 2016. 2. 23..
-//
 
-#ifndef DOCUMENT_H
-#define DOCUMENT_H
+#ifndef __DOCUMENT_H__
+#define __DOCUMENT_H__
 
 #include <string>
 #include <vector>
+#include <map>
 #include "Term.h"
 #include "utils.h"
 
@@ -31,6 +29,9 @@ public:
     Document();
     Document(uint64_t id, string contents);
 
+    /**
+     * Destructor
+     */
     ~Document();
 
     /**
@@ -47,23 +48,28 @@ public:
      */
     std::string getContents() const;
 
-
-    bool getTerm(const std::string& sTerm, Term*& returnTerm);
+    /**
+     * 해당 Keyword 를 이용하여 존재하는 Term 객체를 반환한다
+     *
+     * @param string Term 객체의 keyword
+     *
+     * @return vector<Term> Term 객체의 목록
+     */
+    Term* getTerm(const std::string& keyword);
 
     /**
      * Document 의 Contents 로 부터 형태소 분석 된 단어의 목록을 반환한다.
      *
      * @return vector<Term> Term 객체의 목록
      */
-    vector<Term>& getTerms();
+    std::map<std::string, Term>* getTerms();
 
 protected:
-    const std::string SEPARATOR = " ";
     uint64_t mId;
     std::string mContents;
-    std::vector<Term> mTermsVector;
+    std::map<std::string, Term> mTermsMap;
 
     void createTerm();
 };
 
-#endif //DOCUMENT_H
+#endif //__DOCUMENT_H__

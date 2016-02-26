@@ -1,6 +1,3 @@
-//
-// Created by woodavid on 2016. 2. 25..
-//
 
 #include "QueryParser.h"
 
@@ -9,20 +6,22 @@ void QueryParser::setQuery(const std::string& query)
 {
     std::string cloneQuery = query;
 
+    /**
+     * '(', ')' 가 문자열과 붙어 있는 경우, (ex> (this is test) ) 의 분리를 위해 공백을 추가한다
+     */
     cloneQuery = Utils::ReplaceAll(cloneQuery, "(", " ( ");
     cloneQuery = Utils::ReplaceAll(cloneQuery, ")", " ) ");
 
-    istringstream iss(cloneQuery);
-    vector<string> tokens;
-
-    string temp;
-    while (!iss.eof())
-    {
-        iss >> temp;
-        tokens.push_back(temp);
-    }
-
+    // Tokenize using ' '
+    vector<string> tokens = Utils::Tokenize(cloneQuery);
     mQueryTokens.clear();
+
+    /**
+     * reverse polish notation (https://en.wikipedia.org/wiki/Reverse_Polish_notation) 을 이용,
+     * 다음과 같은 형태로 연산을 변환한다.
+     *
+     * ex> A OR ( B AND C ) -> B C AND A OR
+     */
     stack<string> stackToken;
 
     for (int i = 0; i < tokens.size(); i++)
@@ -38,9 +37,10 @@ void QueryParser::setQuery(const std::string& query)
                 mQueryTokens.push_back(stackToken.top());
                 stackToken.pop();
             }
+
             stackToken.pop();
         }
-        else if (tokens[i] == "AND" || tokens[i] == "OR")
+        else if (isOperator(tokens[i]))
         {
             while (!stackToken.empty() && stackToken.top() != "(")
             {
@@ -69,17 +69,17 @@ std::vector<std::string> QueryParser::getQueryTokens() const
     return mQueryTokens;
 }
 
-bool QueryParser::isOperator(const std::string &str)
+bool QueryParser::isOperator(const std::string& token)
 {
-    return isANDOperator(str) || isOROperator(str);
+    return isANDOperator(token) || isOROperator(token);
 }
 
-bool QueryParser::isANDOperator(const std::string& str)
+bool QueryParser::isANDOperator(const std::string& token)
 {
-    return str == "AND";
+    return token == "AND";
 }
 
-bool QueryParser::isOROperator(const std::string& str)
+bool QueryParser::isOROperator(const std::string& token)
 {
-    return str == "OR";
+    return token == "OR";
 }

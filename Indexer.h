@@ -1,5 +1,5 @@
-#ifndef INDEXER_H
-#define INDEXER_H
+#ifndef __INDEXER_H__
+#define __INDEXER_H__
 
 #include <string>
 #include <map>
@@ -19,7 +19,8 @@
  *
  *
  ******************************************************************************/
-class Indexer {
+class Indexer
+{
 
 public:
     /**
@@ -52,4 +53,4 @@ protected:
 };
 
 
-#endif //INDEXER_H
+#endif //__INDEXER_H__
