@@ -27,19 +27,23 @@ public:
 
     /**
      * Document 를 저장한다. 저장된 Document 객체를 토대로 Index 를 구성한다.
+     *
+     * @param uint64_t document 의 ID
+     * @param string   document 의 내용
      */
-    bool addDocument(uint64_t, const string& documentContents);
+    void addDocument(uint64_t documentId, const string& documentContents);
 
     /**
      * 검색어를 입력 받아 결과를 조회 한다
+     *
+     * @param string query string
+     *
+     * @return vector<uint64_t> 검색 결과의 document ID 의 목록을 반환한다.
      */
-    bool search(const string& query);
-
-    std::vector<uint64_t> getResult() const;
+    std::vector<uint64_t> search(const string& query);
 
 protected:
     map<uint64_t, Document> mDocumentsMap;
-    std::vector<uint64_t> mSearchResult;
     Indexer mIndexer;
     QueryParser mQueryParser;
 

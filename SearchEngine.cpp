@@ -11,7 +11,7 @@ SearchEngine::~SearchEngine()
 
 }
 
-bool SearchEngine::addDocument(uint64_t documentId, const string& documentContents)
+void SearchEngine::addDocument(uint64_t documentId, const string& documentContents)
 {
     auto mapIterator = mDocumentsMap.find(documentId);
 
@@ -31,21 +31,17 @@ bool SearchEngine::addDocument(uint64_t documentId, const string& documentConten
             // Term term = termsIterator->second;
             mIndexer.insertKeyword(termsIterator->first, newDocument.getId());
         }
-
-        return true;
     }
-
-    return false;
 }
 
-bool SearchEngine::search(const string& query) {
-
+std::vector<uint64_t> SearchEngine::search(const string &query)
+{
     // Query Parsing.
     mQueryParser.setQuery(query);
     std::vector<string> queryToken = mQueryParser.getQueryTokens();
 
-    // 지난 결과 값을 초기화 한다
-    mSearchResult.clear();
+    // search result.
+    vector<uint64_t> searchResult;
 
     std::stack<std::vector<uint64_t>> queryResultsStack;
 
@@ -100,17 +96,12 @@ bool SearchEngine::search(const string& query) {
             queryResultsStack.pop();
         }
 
-        mSearchResult = result1;
+        searchResult = result1;
     }
 
     // TODO: Sort Result.
 
-    return mSearchResult.size() > 0;
-}
-
-std::vector<uint64_t> SearchEngine::getResult() const
-{
-    return mSearchResult;
+    return searchResult;
 }
 
 vector<uint64_t> SearchEngine::conjunct(vector<uint64_t> documentIds, vector<uint64_t> compareDocumentIds)

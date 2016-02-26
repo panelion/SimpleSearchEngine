@@ -125,20 +125,20 @@ void commandSearch(SearchEngine& engine)
 
     cout << "Searching...." << endl;
 
-    if (engine.search(query))
+    std::vector<uint64_t> searchResult = engine.search(query);
+
+    if (searchResult.size() > 0)
     {
-        vector<uint64_t> resultList = engine.getResult();
+        cout << searchResult.size() << " Found." << endl;
 
-        cout << resultList.size() << " Found." << endl;
-
-        for (auto vectorIterator = resultList.begin(); vectorIterator != resultList.end(); ++vectorIterator)
+        for (auto vectorIterator = searchResult.begin(); vectorIterator != searchResult.end(); ++vectorIterator)
         {
             cout << "Found Document ID : " << *vectorIterator << endl;
         }
     }
     else
     {
-        cout << endl << "No Results." << endl << endl;
+        cout << endl << "No Search Results." << endl << endl;
     }
 
     cout << endl << "Completed search." << endl;
