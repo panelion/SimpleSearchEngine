@@ -20,6 +20,8 @@ void SearchEngine::addDocument(uint64_t documentId, const string& documentConten
         // TODO: Document Content 의 크기가 큰 경우, memory 에 부하가 생길 수 있으므로, 원본 데이터의 경우, 별도로 저장하는 것이 좋음.
         Document newDocument = Document(documentId, documentContents);
 
+        std::cout << "created document id : " << documentId << std::endl;
+
         // Save Document to Map.
         mDocumentsMap.insert(std::make_pair(newDocument.getId(), newDocument));
 

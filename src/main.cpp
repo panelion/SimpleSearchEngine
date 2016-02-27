@@ -1,35 +1,56 @@
 #include <iostream>
 #include "SearchEngine.h"
-
+#include "DocumentParser.h"
 
 using namespace std;
 
 
+void run();
+
 /**
- * Document 의 정보를 입력 받아 저장하는 Command 를 수행한다
+ * Document 의 정보를 입력 받아 Indexing 하는 Command 를 수행한다.
+ *
+ * @param shared_ptr<SearchEngine> SearchEngine Pointer
  */
-void CommandInputDocument(SearchEngine& engine);
+void commandInputDocument(shared_ptr<SearchEngine> engine);
+
+
+/**
+ * Document file path 를 받아 Document data 를 파싱하여 Indexing 하는 Command 를 수행한다.
+ *
+ * @param shared_ptr<DocumentParser> DocumentParser Pointer
+ */
+void commandInputDocumentFiles(shared_ptr<DocumentParser> documentParser);
 
 /**
  * Query 를 입력 받아 검색을 수행한다
+ *
+ * @param shared_ptr<SearchEngine> SearchEngine Pointer
  */
-void commandSearch(SearchEngine& engine);
+void commandSearch(shared_ptr<SearchEngine> engine);
 
 
 int main() {
+    run();
+    return 0;
+}
 
-    SearchEngine engine = SearchEngine();
+void run()
+{
+    std::shared_ptr<SearchEngine> engine = std::make_shared<SearchEngine>();
+    std::shared_ptr<DocumentParser> documentParser = std::make_shared<DocumentParser>(engine);
 
     int commandNumber = 0;
     bool done = false;
 
     while(!done)
     {
-        cout << "===================" << endl;
-        cout << "1 Input Document." << endl;
-        cout << "2 Search." << endl;
-        cout << "3 Quit." << endl;
-        cout << "===================" << endl;
+        cout << endl << "=========================================================" << endl;
+        cout << "1 Input document data manually." << endl;
+        cout << "2 Input document data from file." << endl;
+        cout << "3 Search." << endl;
+        cout << "4 Quit." << endl;
+        cout << endl << "=========================================================" << endl;
 
         cout << "Input your command number." << endl;
         cin >> commandNumber;
@@ -40,12 +61,15 @@ int main() {
             switch (commandNumber)
             {
                 case 1:
-                    CommandInputDocument(engine);
+                    commandInputDocument(engine);
                     break;
                 case 2:
-                    commandSearch(engine);
+                    commandInputDocumentFiles(documentParser);
                     break;
                 case 3:
+                    commandSearch(engine);
+                    break;
+                case 4:
                     done = true;
                     break;
                 default:
@@ -62,12 +86,10 @@ int main() {
             cin.ignore();
         }
     }
-
-    return 0;
 }
 
 
-void CommandInputDocument(SearchEngine& engine)
+void commandInputDocument(std::shared_ptr<SearchEngine> engine)
 {
     uint64_t documentID = 0;
     string strDocumentID, documentContents;
@@ -105,11 +127,29 @@ void CommandInputDocument(SearchEngine& engine)
     }
 
     cout << "Indexing...." << endl;
-    engine.addDocument(documentID, documentContents);
+    engine->addDocument(documentID, documentContents);
     cout << "Completed indexed." << endl;
 }
 
-void commandSearch(SearchEngine& engine)
+void commandInputDocumentFiles(shared_ptr<DocumentParser> documentParser)
+{
+    string strDocumentFilePath;
+
+    while (strDocumentFilePath.empty())
+    {
+        if (strDocumentFilePath.empty())
+        {
+            cout << "Input document file path: " << endl;
+            getline(cin, strDocumentFilePath);
+            cin.clear();
+        }
+    }
+
+    documentParser->addDocument(strDocumentFilePath);
+}
+
+
+void commandSearch(shared_ptr<SearchEngine> engine)
 {
     string query;
 
@@ -125,7 +165,7 @@ void commandSearch(SearchEngine& engine)
 
     cout << "Searching...." << endl;
 
-    std::vector<uint64_t> searchResult = engine.search(query);
+    std::vector<uint64_t> searchResult = engine->search(query);
 
     if (searchResult.size() > 0)
     {

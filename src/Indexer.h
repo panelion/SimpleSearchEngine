@@ -32,7 +32,7 @@ public:
     void insertKeyword(const std::string &keyword, uint64_t documentId);
 
     /**
-     * Indexing Data 에 질의한 keyword 를 이용하여 검색한다
+     * Indexing data 에 질의한 keyword 를 이용하여 검색한다
      *
      * @param string    조회 Keyword
      *

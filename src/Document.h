@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include "Term.h"
-#include "utils.h"
+#include "Utils.h"
 
 
 /******************************************************************************
