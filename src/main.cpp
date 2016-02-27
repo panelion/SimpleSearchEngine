@@ -65,7 +65,7 @@ void run()
                     commandInputDocument(engine);
                     break;
                 case 2:
-                    commandInputDocumentFiles(engine);
+                    commandInputDocumentFiles(documentParser);
                     break;
                 case 3:
                     commandSearch(engine);
