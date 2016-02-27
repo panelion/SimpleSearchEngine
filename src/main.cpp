@@ -51,7 +51,7 @@ void run()
         cout << "2 Input document data from file." << endl;
         cout << "3 Search." << endl;
         cout << "4 Quit." << endl;
-        cout << endl << "=========================================================" << endl;
+        cout << "=========================================================" << endl;
 
         cout << "Input your command number." << endl;
         cin >> commandNumber;
@@ -164,15 +164,16 @@ void commandSearch(shared_ptr<SearchEngine> engine)
         }
     }
 
-    cout << "===============Searching===============" << endl;
+    clock_t start = clock();
+    cout << "Searching...." << endl;
 
     std::vector<Hits> searchResult = engine->search(query);
 
-    cout << "===============Completed===============" << endl << endl;
+    clock_t end = clock();
 
     if (searchResult.size() > 0)
     {
-        cout << searchResult.size() << " Found(s)." << endl << endl;
+        cout << searchResult.size() << " Found(s). " << "(" << end - start << "ms elapsed)" << endl << endl;
 
         for (auto vectorIterator = searchResult.begin(); vectorIterator != searchResult.end(); ++vectorIterator)
         {
@@ -184,4 +185,7 @@ void commandSearch(shared_ptr<SearchEngine> engine)
     {
         cout << endl << "No Search Result(s)." << endl << endl;
     }
+
+    cout << "Press the enter key..." << endl;
+    cin.ignore();
 }
