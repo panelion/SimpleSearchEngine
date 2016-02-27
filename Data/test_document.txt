@@ -53,3 +53,44 @@ Flake and Coons have introduced a bill nicknamed the END Wildlife Trafficking Ac
 
 "But the impact doesn't stop there," they continued. "The growth of this illegal industry threatens the stability of vulnerable ecosystems and local communities, the health of their economies, and security at home and around the world."
 </contents>
+<id>6</id>
+<contents>
+It's simple: if you want to interact deeply with Mac OS X, Linux, and other Unix-like systems, you need to know how to work with the Bash shell. This concise little book puts all of the essential information about Bash right at your fingertips.
+You'll quickly find answers to the annoying questions that generally come up when you're writing shell scripts: What characters do you need to quote? How do you get variable substitution to do exactly what you want? How do you use arrays? Updated for Bash version 4.4, this book has the answers to these and other problems in a format that makes browsing quick and easy.
+</contents>
+
+<id>7</id>
+<contents>
+This is an exciting time to learn JavaScript. Now that the latest JavaScript specification - ECMAScript 6.0 (ES6) - has been finalized, learning how to develop high-quality applications with this language is easier and more satisfying than ever. This practical book takes programmers (amateurs and pros alike) on a no-nonsense tour of ES6, along with some related tools and techniques.
+Author Ethan Brown (Web Development with Node and Express) not only guides you through simple and straightforward topics (variables, control flow, arrays), but also covers complex concepts such as functional and asynchronous programming. You'll learn how to create powerful and responsive web applications on the client, or with Node.js on the server.
+</contents>
+
+<id>8</id>
+<contents>
+Businesses are gathering data today at exponential rates and yet few people know how to access it meaningfully. If you're a business or IT professional, this short hands-on guide teaches you how to pull and transform data with SQL in significant ways. You will quickly master the fundamentals of SQL and learn how to create your own databases.
+Author Thomas Nield provides exercises throughout the book to help you practice your newfound SQL skills at home, without having to use a database server environment. Not only will you learn how to use key SQL statements to find and manipulate your data, but you'll also discover how to efficiently design and manage databases to meet your needs.
+</contents>
+
+<id>9</id>
+<contents>
+Amazon Web Services in Action introduces you to computing, storing, and networking in the AWS cloud. The book will teach you about the most important services on AWS. You will also learn about best practices regarding security, high availability and scalability.You'll start with a broad overview of cloud computing and AWS and learn how to spin-up servers manually and from the command line. You'll learn how to automate your infrastructure by programmatically calling the AWS API to control every part of AWS. You will be introduced to the concept of Infrastructure as Code with the help of AWS CloudFormation.You will learn about different approaches to deploy applications on AWS. You'll also learn how to secure your infrastructure by isolating networks, controlling traffic and managing access to AWS resources. Next, you'll learn options and techniques for storing your data. You will experience how to integrate AWS services into your own applications by the use of SDKs. Finally, this book teaches you how to design for high availability, fault tolerance, and scalability.
+</contents>
+
+<id>10</id>
+<contents>
+Essential C# 6.0 is a well-organized, no-fluff guide to the latest versions of C# for programmers at all levels of experience. Fully updated to reflect new C# 6.0 and .NET 4.6 features and patterns, it will help you write C# code that's simple, powerful, robust, secure, and maintainable.
+
+This book's authors are world-class C# experts: long-time Microsoft MVP and Regional Director Mark Michaelis and Eric Lippert, formerly principal developer on Microsoft's C# compiler team. Together, they cover the entire language, illustrating key constructs with succinct examples and offering a complete foundation for successful C# development.
+
+Essential C# 6.0 makes it easy to program with any version of C#, whether you're creating new code or maintaining existing systems. Separate indexes for C# versions 4, 5, and 6 help you quickly find version-specific answers with accompanying visual indicators that help you identify which language innovations will work when. This edition also includes a set of best-practice C# Coding Guidelines updated to leverage C# 6.0 constructs.
+</contents>
+
+<id>11</id>
+<contents>
+The Go Programming Language is the authoritative resource for any programmer who wants to learn Go. It shows how to write clear and idiomatic Go to solve real-world problems. The book does not assume prior knowledge of Go nor experience with any specific language, so you'll find it accessible whether you're most comfortable with JavaScript, Ruby, Python, Java, or C++.
+
+The first chapter is a tutorial on the basic concepts of Go, introduced through programs for file I/O and text processing, simple graphics, and web clients and servers.
+
+Early chapters cover the structural elements of Go programs: syntax, control flow, data types, and the organization of a program into packages, files, and functions. The examples illustrate many packages from the standard library and show how to create new ones of your own. Later chapters explain the package mechanism in more detail, and how to build, test, and maintain projects using the go tool.
+The chapters on methods and interfaces introduce Go's unconventional approach to object-oriented programming, in which methods can be declared on any type and interfaces are implicitly satisfied. They explain the key principles of encapsulation, composition, and substitutability using realistic examples.
+</contents>

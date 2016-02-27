@@ -1,38 +1,30 @@
 
 #include "Indexer.h"
 
-void Indexer::insertKeyword(const std::string &keyword, uint64_t documentId)
+void Indexer::insertKeyword(const std::string &keyword, std::shared_ptr<Document> document)
 {
     auto findIterator = mIndexStore.find(keyword);
 
     if (findIterator != mIndexStore.end())
     {
-        findIterator->second.push_back(documentId);
+        findIterator->second.push_back(document);
         sort(findIterator->second.begin(), findIterator->second.end());
     }
     else
     {
-        std::vector<uint64_t> values = { documentId };
+        std::vector<std::shared_ptr<Document>> values = { document };
         mIndexStore.insert(std::make_pair(keyword, values));
     }
 }
 
-bool Indexer::search(const std::string &keyword)
+DocumentsVectorPointer Indexer::search(const std::string &keyword)
 {
-    mResultValues.clear();
-
     auto mapIterator = mIndexStore.find(keyword);
 
     if (mapIterator != mIndexStore.end())
     {
-        mResultValues = mapIterator->second;
-        return true;
+        return mapIterator->second;
     }
 
-    return false;
-}
-
-std::vector<uint64_t> Indexer::getResult() const
-{
-    return mResultValues;
+    return DocumentsVectorPointer();
 }

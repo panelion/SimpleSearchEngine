@@ -13,7 +13,7 @@ void QueryParser::setQuery(const std::string& query)
     cloneQuery = Utils::ReplaceAll(cloneQuery, ")", " ) ");
 
     // Tokenize using ' '
-    vector<string> tokens = Utils::Tokenize(cloneQuery);
+    std::vector<std::string> tokens = Utils::Tokenize(cloneQuery);
     mQueryTokens.clear();
 
     /**
@@ -22,7 +22,7 @@ void QueryParser::setQuery(const std::string& query)
      *
      * ex> A OR ( B AND C ) -> B C AND A OR
      */
-    stack<string> stackToken;
+    std::stack<std::string> stackToken;
 
     for (int i = 0; i < tokens.size(); i++)
     {
@@ -62,6 +62,13 @@ void QueryParser::setQuery(const std::string& query)
         mQueryTokens.push_back(stackToken.top());
         stackToken.pop();
     }
+
+//    for (auto token : mQueryTokens)
+//    {
+//        std::cout << "Query token : " << token << " ";
+//    }
+//
+//    std::cout << std::endl;
 }
 
 std::vector<std::string> QueryParser::getQueryTokens() const

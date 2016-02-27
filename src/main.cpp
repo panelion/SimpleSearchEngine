@@ -64,7 +64,7 @@ void run()
                     commandInputDocument(engine);
                     break;
                 case 2:
-                    commandInputDocumentFiles(documentParser);
+                    commandInputDocumentFiles(engine);
                     break;
                 case 3:
                     commandSearch(engine);
@@ -163,23 +163,24 @@ void commandSearch(shared_ptr<SearchEngine> engine)
         }
     }
 
-    cout << "Searching...." << endl;
+    cout << "===============Searching===============" << endl;
 
-    std::vector<uint64_t> searchResult = engine->search(query);
+    std::vector<Hits> searchResult = engine->search(query);
+
+    cout << "===============Completed===============" << endl << endl;
 
     if (searchResult.size() > 0)
     {
-        cout << searchResult.size() << " Found." << endl;
+        cout << searchResult.size() << " Found(s)." << endl << endl;
 
         for (auto vectorIterator = searchResult.begin(); vectorIterator != searchResult.end(); ++vectorIterator)
         {
-            cout << "Found Document ID : " << *vectorIterator << endl;
+            cout << "Found Document ID : " << (*vectorIterator).getDocument()->getId() << " ";
+            cout << "(Score : " << (*vectorIterator).getScore() << ")" << endl;
         }
     }
     else
     {
-        cout << endl << "No Search Results." << endl << endl;
+        cout << endl << "No Search Result(s)." << endl << endl;
     }
-
-    cout << endl << "Completed search." << endl;
 }

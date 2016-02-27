@@ -6,6 +6,8 @@
 #include <vector>
 #include "Document.h"
 
+typedef std::vector<std::shared_ptr<Document>> DocumentsVectorPointer;
+
 /******************************************************************************
  *
  * - Indexer
@@ -19,6 +21,7 @@
  *
  *
  ******************************************************************************/
+
 class Indexer
 {
 
@@ -27,29 +30,22 @@ public:
      * Keyword 를 Key 로 하여, document ID 값을 Indexing 한다
      *
      * @param string    Keyword
-     * @param uint64_t  document 의 ID 값
+     * @param shared_ptr<Document> document pointer
      */
-    void insertKeyword(const std::string &keyword, uint64_t documentId);
+    void insertKeyword(const std::string &keyword, std::shared_ptr<Document> document);
 
     /**
-     * Indexing data 에 질의한 keyword 를 이용하여 검색한다
+     * Indexing data 에 Keyword 를 이용하여 해당 Keyword 의 데이터가 존재하는지 검색한다
      *
      * @param string    조회 Keyword
      *
-     * @return bool     true: 검색 결과 존재, false: 검색 결과 존재 안함
+     * @return std::vector<shared_ptr<Document>> 검색된 Document 객체의 목록
      */
-    bool search(const std::string &keyword);
+    DocumentsVectorPointer search(const std::string &keyword);
 
-    /**
-     * 검색의 결과 값을 반환한다
-     *
-     * @return vector<uint64_t> document ids.
-     */
-    std::vector<uint64_t> getResult() const;
 
 protected:
-    std::map<std::string, std::vector<uint64_t>> mIndexStore;
-    std::vector<uint64_t> mResultValues;
+    std::map<std::string, DocumentsVectorPointer> mIndexStore;
 };
 
 

@@ -1,21 +1,17 @@
 
 #include "Term.h"
 
-Term::Term(string keyword)
+Term::Term(std::string keyword): mKeyword(keyword), mFrequency(1), mOffsets({-1})
 {
-    mKeyword = keyword;
-    mFrequency = 1;
-    mOffsets = {-1};
+
 }
 
-Term::Term(string keyword, int offset)
+Term::Term(std::string keyword, int offset): mKeyword(keyword), mFrequency(1), mOffsets({offset})
 {
-    mKeyword = keyword;
-    mFrequency = 1;
-    mOffsets = {offset};
+
 }
 
-string Term::getKeyword() const
+std::string Term::getKeyword() const
 {
     return mKeyword;
 }
@@ -35,19 +31,13 @@ int Term::getFrequency() const
     return mFrequency;
 }
 
-vector<int> Term::getOffsets() const
+std::set<int> Term::getOffsets() const
 {
     return mOffsets;
 }
 
-void Term::setOffset(int offset)
-{
-    mOffsets.clear();
-    mOffsets.push_back(offset);
-}
-
 void Term::addOffset(int offset)
 {
-    mOffsets.push_back(offset);
+    mOffsets.insert(offset);
 }
 

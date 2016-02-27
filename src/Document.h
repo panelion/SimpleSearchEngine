@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include "Term.h"
 #include "Utils.h"
 
@@ -26,8 +27,7 @@ public:
     /**
      * Constructor
      */
-    Document();
-    Document(uint64_t id, string contents);
+    Document(uint64_t id, std::string contents);
 
     /**
      * Destructor
@@ -55,14 +55,30 @@ public:
      *
      * @return vector<Term> Term 객체의 목록
      */
-    Term* getTerm(const std::string& keyword);
+    const Term* getTerm(const std::string& keyword) const;
 
     /**
      * Document 의 Contents 로 부터 형태소 분석 된 단어의 목록을 반환한다.
      *
      * @return vector<Term> Term 객체의 목록
      */
-    std::map<std::string, Term>* getTerms();
+    const std::map<std::string, Term>* getTerms() const;
+
+    /**
+     * operator 재정의
+     */
+    bool operator==(const Document& compareDocument) const;
+    bool operator> (const Document& compareDocument) const;
+    bool operator< (const Document& compareDocument) const;
+
+    /**
+     * Keyword 목록을 받아, 각각의 키워드 빈도수의 합을 구한다.
+     *
+     * @param set<string> keyword 의 목록
+     *
+     * @return 합산값.
+     */
+    int getSumFrequencyByKeywords(std::set<std::string> keywords);
 
 protected:
     uint64_t mId;

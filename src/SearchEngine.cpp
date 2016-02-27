@@ -1,6 +1,7 @@
 
 #include "SearchEngine.h"
 
+
 SearchEngine::SearchEngine(): mIndexer(), mQueryParser()
 {
 
@@ -11,107 +12,128 @@ SearchEngine::~SearchEngine()
 
 }
 
-void SearchEngine::addDocument(uint64_t documentId, const string& documentContents)
+void SearchEngine::addDocument(uint64_t documentId, const std::string& documentContents)
 {
     auto mapIterator = mDocumentsMap.find(documentId);
 
     if (mapIterator == mDocumentsMap.end())
     {
-        // TODO: Document Content 의 크기가 큰 경우, memory 에 부하가 생길 수 있으므로, 원본 데이터의 경우, 별도로 저장하는 것이 좋음.
-        Document newDocument = Document(documentId, documentContents);
+        // Document newDocument = Document(documentId, documentContents);
+        std::shared_ptr<Document> newDocument = std::make_shared<Document>(documentId, documentContents);
 
         std::cout << "created document id : " << documentId << std::endl;
 
         // Save Document to Map.
-        mDocumentsMap.insert(std::make_pair(newDocument.getId(), newDocument));
+        mDocumentsMap.insert(std::make_pair(newDocument->getId(), newDocument));
 
-        // 새로이 생성된 Document 객체로 부터 Terms 를 받아 Indexing 한다
-        std::map<std::string, Term>* termsMap = newDocument.getTerms();
+        // 새로 생성된 Document 객체로 부터 Terms 를 받아 Index 를 구현한다
+        const std::map<std::string, Term>* termsMap = newDocument->getTerms();
 
         for (auto termsIterator = termsMap->begin(); termsIterator != termsMap->end(); ++termsIterator)
         {
-            // Term term = termsIterator->second;
-            mIndexer.insertKeyword(termsIterator->first, newDocument.getId());
+            // Indexing
+            Indexing(termsIterator->first, newDocument);
         }
     }
 }
 
-std::vector<uint64_t> SearchEngine::search(const string &query)
+std::vector<Hits> SearchEngine::search(const std::string &query)
 {
-    // Query Parsing.
+    // 질의어를 분석 하여 reverse polish notation 형태로 만든다.
     mQueryParser.setQuery(query);
-    std::vector<string> queryToken = mQueryParser.getQueryTokens();
+    std::vector<std::string> queryToken = mQueryParser.getQueryTokens();
 
     // search result.
-    vector<uint64_t> searchResult;
+    DocumentsVectorPointer searchResult;
 
-    std::stack<std::vector<uint64_t>> queryResultsStack;
+    // 검색 결과 임시 저장 Stack
+    std::stack<DocumentsVectorPointer> queryResultsStack;
+
+    // 검색 Keyword 목록을 저장
+    std::set<std::string> keywordsSet;
 
     for (auto vectorIterator = queryToken.begin(); vectorIterator != queryToken.end(); ++vectorIterator)
     {
         if (mQueryParser.isANDOperator(*vectorIterator))
         {
-            // AND
-            std::vector<uint64_t> result1 = queryResultsStack.top();
+            // AND 연산인 경우, 지난 검색 결과들을 교집합 한다.
+            DocumentsVectorPointer tempResult = queryResultsStack.top();
             queryResultsStack.pop();
 
             while (!queryResultsStack.empty())
             {
-                result1 = conjunct(result1, queryResultsStack.top());
+                tempResult = conjunct(tempResult, queryResultsStack.top());
                 queryResultsStack.pop();
             }
 
-            queryResultsStack.push(result1);
+            queryResultsStack.push(tempResult);
         }
         else if (mQueryParser.isOROperator(*vectorIterator))
         {
-            // OR
-            std::vector<uint64_t> result1 = queryResultsStack.top();
+            // OR 연산인 경우, 지난 검색 결과들을 합집합 한다.
+            DocumentsVectorPointer tempResult = queryResultsStack.top();
             queryResultsStack.pop();
 
             while (!queryResultsStack.empty())
             {
-                result1 = disjunct(result1, queryResultsStack.top());
+                tempResult = disjunct(tempResult, queryResultsStack.top());
                 queryResultsStack.pop();
             }
 
-            queryResultsStack.push(result1);
+            queryResultsStack.push(tempResult);
         }
         else
         {
-            if (mIndexer.search(*vectorIterator))
+            // Keyword 를 이용하여 Indexer 에서 검색 후, Stack 에 저장한다.
+            DocumentsVectorPointer indexSearchResult = mIndexer.search(*vectorIterator);
+
+            // 검색 결과 저장 (검색 결과가 없을 경우에도 저장한다)
+            queryResultsStack.push(indexSearchResult);
+
+            if (indexSearchResult.size() > 0)
             {
-                queryResultsStack.push(mIndexer.getResult());
+                // 검색 결과가 존재하는 Keyword 만을 저장한다.
+                keywordsSet.insert(*vectorIterator);
             }
         }
     }
 
-    // Stack 에 남아 있는 결과를 AND 연산을 이용하여 정리한다
+    // Stack 에 남아 있는 결과를 AND 연산을 이용하여 교집합 한다
     if (!queryResultsStack.empty())
     {
-        std::vector<uint64_t> result1 = queryResultsStack.top();
+        DocumentsVectorPointer tempResult = queryResultsStack.top();
         queryResultsStack.pop();
 
         while (!queryResultsStack.empty())
         {
-            result1 = conjunct(result1, queryResultsStack.top());
+            tempResult = conjunct(tempResult, queryResultsStack.top());
             queryResultsStack.pop();
         }
 
-        searchResult = result1;
+        searchResult = tempResult;
     }
 
-    // TODO: Sort Result.
+    // 검색 결과가 존재 한다면
+    if (searchResult.size() > 0)
+    {
+        return sorting(searchResult, keywordsSet);
+    }
 
-    return searchResult;
+    return std::vector<Hits>();
 }
 
-vector<uint64_t> SearchEngine::conjunct(vector<uint64_t> documentIds, vector<uint64_t> compareDocumentIds)
+void SearchEngine::Indexing(const std::string& keyword, const std::shared_ptr<Document> document)
 {
-    auto it1Begin = documentIds.begin(), it1End = documentIds.end();
-    auto it2Begin = compareDocumentIds.begin(), it2End = compareDocumentIds.end();
+    mIndexer.insertKeyword(keyword, document);
+}
 
-    vector<uint64_t> result;
+DocumentsVectorPointer SearchEngine::conjunct(const DocumentsVectorPointer& documents,
+                                              const DocumentsVectorPointer& compareDocuments)
+{
+    auto it1Begin = documents.begin(), it1End = documents.end();
+    auto it2Begin = compareDocuments.begin(), it2End = compareDocuments.end();
+
+    DocumentsVectorPointer result;
 
     while (it1Begin < it1End && it2Begin < it2End)
     {
@@ -135,12 +157,13 @@ vector<uint64_t> SearchEngine::conjunct(vector<uint64_t> documentIds, vector<uin
     return result;
 }
 
-vector<uint64_t> SearchEngine::disjunct(vector<uint64_t> documentIds, vector<uint64_t> compareDocumentIds)
+DocumentsVectorPointer SearchEngine::disjunct(const DocumentsVectorPointer& documents,
+                                              const DocumentsVectorPointer& compareDocuments)
 {
-    auto it1Begin = documentIds.begin(), it1End = documentIds.end();
-    auto it2Begin = compareDocumentIds.begin(), it2End = compareDocumentIds.end();
+    auto it1Begin = documents.begin(), it1End = documents.end();
+    auto it2Begin = compareDocuments.begin(), it2End = compareDocuments.end();
 
-    vector<uint64_t> result;
+    DocumentsVectorPointer result;
 
     while (it1Begin < it1End && it2Begin < it2End)
     {
@@ -178,19 +201,19 @@ vector<uint64_t> SearchEngine::disjunct(vector<uint64_t> documentIds, vector<uin
     return result;
 }
 
-vector<Document> SearchEngine::getDocuments(vector<uint64_t>& documentIds)
+std::vector<Hits> SearchEngine::sorting(const DocumentsVectorPointer& resultDocuments,
+                                             const std::set<std::string>& keywords)
 {
-    std::vector<Document> returnDocuments;
-
-    for (auto vectorIterator = documentIds.begin(); vectorIterator != documentIds.end(); ++vectorIterator)
+    std::vector<Hits> hitsVector;
+    // 검색 키워드 별 빈도수를 Document 객체로 부터 조회하여 합산한다.
+    for (auto vectorIterator = resultDocuments.begin(); vectorIterator != resultDocuments.end(); ++vectorIterator)
     {
-        auto mapIterator = mDocumentsMap.find(*vectorIterator);
-
-        if (mapIterator != mDocumentsMap.end())
-        {
-            returnDocuments.push_back(mapIterator->second);
-        }
+        int sumFrequency = (*vectorIterator)->getSumFrequencyByKeywords(keywords);
+        hitsVector.push_back(Hits(sumFrequency, *vectorIterator));
     }
 
-    return returnDocuments;
+    // 합산 결과값을 기준으로 sorting 한다. (내림차순)
+    sort(hitsVector.begin(), hitsVector.end(), Hits::scoreCompare);
+
+    return hitsVector;
 }

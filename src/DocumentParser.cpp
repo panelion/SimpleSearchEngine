@@ -2,7 +2,7 @@
 #include "DocumentParser.h"
 
 
-DocumentParser::DocumentParser(shared_ptr<SearchEngine> searchEngine) : mSearchEngine(searchEngine)
+DocumentParser::DocumentParser(std::shared_ptr<SearchEngine> searchEngine) : mSearchEngine(searchEngine)
 {
 
 }
@@ -49,9 +49,9 @@ void DocumentParser::addDocument(const std::string& documentFilePath)
             ss >> documentID;
 
             // Create Document Object.
-            cout << "Indexing...." << endl;
+            std::cout << "Indexing...." << std::endl;
             mSearchEngine->addDocument(documentID, strDocumentContents);
-            cout << "Completed Indexed. Document ID : " << documentID << endl;
+            std::cout << "Completed Indexed. Document ID : " << documentID << std::endl;
 
             strDocumentID.clear();
             strDocumentContents.clear();

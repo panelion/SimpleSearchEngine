@@ -1,16 +1,9 @@
 
 #include "Document.h"
 
-Document::Document()
+
+Document::Document(uint64_t id, std::string contents): mId(id), mContents(contents)
 {
-
-}
-
-Document::Document(uint64_t id, string contents)
-{
-    mId = id;
-    mContents = contents;
-
     createTerm();
 }
 
@@ -24,7 +17,7 @@ uint64_t Document::getId() const
     return mId;
 }
 
-string Document::getContents() const
+std::string Document::getContents() const
 {
     return mContents;
 }
@@ -35,11 +28,11 @@ void Document::createTerm()
     std::string clearContents = Utils::RemoveSpecialCharacter(getContents());
 
     // Tokenize
-    vector<string> keywords = Utils::Tokenize(clearContents);
+    std::vector<std::string> keywords = Utils::Tokenize(clearContents);
 
     for (int i = 0; i < keywords.size(); i++)
     {
-        string keyword = keywords[i];
+        std::string keyword = keywords[i];
 
         auto mapIterator = mTermsMap.find(keyword);
 
@@ -52,11 +45,14 @@ void Document::createTerm()
         {
             // 이미 존재하는 Term 이므로, 기존의 Term 의 Frequency 값을 1 증가한다.
             mapIterator->second.increaseFrequency(1);
+
+            // 위치 정보를 추가 한다.
+            mapIterator->second.addOffset(i);
         }
     }
 }
 
-Term* Document::getTerm(const string& keyword)
+const Term* Document::getTerm(const std::string& keyword) const
 {
     auto mapIterator = mTermsMap.find(keyword);
 
@@ -68,7 +64,54 @@ Term* Document::getTerm(const string& keyword)
     return &(mapIterator->second);
 }
 
-std::map<std::string, Term>* Document::getTerms()
+const std::map<std::string, Term>* Document::getTerms() const
 {
     return &mTermsMap;
+}
+
+bool Document::operator==(const Document& compareDocument) const
+{
+    if (*this == compareDocument)
+    {
+        return true;
+    }
+
+    return getId() == compareDocument.getId();
+}
+
+bool Document::operator>(const Document& compareDocument) const
+{
+    if (*this == compareDocument)
+    {
+        return false;
+    }
+
+    return getId() > compareDocument.getId();
+}
+
+bool Document::operator<(const Document& compareDocument) const
+{
+    if (*this == compareDocument)
+    {
+        return false;
+    }
+
+    return getId() < compareDocument.getId();
+}
+
+int Document::getSumFrequencyByKeywords(std::set<std::string> keywords)
+{
+    int sumFrequency = 0;
+
+    for (auto keyword : keywords)
+    {
+        const Term* term = getTerm(keyword);
+
+        if (term != nullptr)
+        {
+            sumFrequency += term->getFrequency();
+        }
+    }
+
+    return sumFrequency;
 }

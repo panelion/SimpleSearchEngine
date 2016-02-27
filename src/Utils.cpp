@@ -9,7 +9,7 @@ std::vector<std::string> Utils::Tokenize(const std::string& str)
      */
     std::vector<std::string> tokens;
     std::string temp;
-    istringstream iss(str);
+    std::istringstream iss(str);
 
     while (!iss.eof())
     {
@@ -21,13 +21,13 @@ std::vector<std::string> Utils::Tokenize(const std::string& str)
 }
 
 
-string Utils::ReplaceAll(const string &str, const string &pattern, const string &replace)
+std::string Utils::ReplaceAll(const std::string &str, const std::string &pattern, const std::string &replace)
 {
-    string result = str;
-    string::size_type position = 0;
-    string::size_type offset = 0;
+    std::string result = str;
+    std::string::size_type position = 0;
+    std::string::size_type offset = 0;
 
-    while((position = result.find(pattern, offset)) != string::npos)
+    while((position = result.find(pattern, offset)) != std::string::npos)
     {
         result.replace(result.begin() + position, result.begin() + position + pattern.size(), replace);
         offset = position + replace.size();
@@ -41,7 +41,7 @@ std::string Utils::RemoveSpecialCharacter(const std::string &str)
 {
     int i = 0;
     size_t strLength = str.length();
-    string temp = str;
+    std::string temp = str;
 
     while (i < strLength)
     {
@@ -61,8 +61,9 @@ std::string Utils::RemoveSpecialCharacter(const std::string &str)
         }
         else
         {
-            temp.erase((unsigned long)i, 1);
-            --strLength;
+            temp[i] = ' ';
+            // --strLength;
+            ++i;
         }
     }
 
