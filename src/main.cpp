@@ -30,7 +30,8 @@ void commandInputDocumentFiles(shared_ptr<DocumentParser> documentParser);
 void commandSearch(shared_ptr<SearchEngine> engine);
 
 
-int main() {
+int main()
+{
     run();
     return 0;
 }
