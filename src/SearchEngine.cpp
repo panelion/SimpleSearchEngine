@@ -56,31 +56,33 @@ std::vector<Hits> SearchEngine::search(const std::string &query)
     {
         if (mQueryParser.isANDOperator(*vectorIterator))
         {
-            // AND 연산인 경우, 지난 검색 결과들을 교집합 한다.
-            DocumentsVectorPointer tempResult = queryResultsStack.top();
-            queryResultsStack.pop();
-
-            while (!queryResultsStack.empty())
+            // AND 연산인 경우, 지난 두 개의 검색 결과를 교집합 한다.
+            if (queryResultsStack.size() >= 2)
             {
-                tempResult = conjunct(tempResult, queryResultsStack.top());
+                DocumentsVectorPointer tempResult1 = queryResultsStack.top();
                 queryResultsStack.pop();
-            }
 
-            queryResultsStack.push(tempResult);
+                DocumentsVectorPointer tempResult2 = queryResultsStack.top();
+                queryResultsStack.pop();
+
+                DocumentsVectorPointer tempResult = conjunct(tempResult1, tempResult2);
+                queryResultsStack.push(tempResult);
+            }
         }
         else if (mQueryParser.isOROperator(*vectorIterator))
         {
-            // OR 연산인 경우, 지난 검색 결과들을 합집합 한다.
-            DocumentsVectorPointer tempResult = queryResultsStack.top();
-            queryResultsStack.pop();
-
-            while (!queryResultsStack.empty())
+            // OR 연산인 경우, 지난 두 개의 검색 결과를 합집합 한다.
+            if (queryResultsStack.size() >= 2)
             {
-                tempResult = disjunct(tempResult, queryResultsStack.top());
+                DocumentsVectorPointer tempResult1 = queryResultsStack.top();
                 queryResultsStack.pop();
-            }
 
-            queryResultsStack.push(tempResult);
+                DocumentsVectorPointer tempResult2 = queryResultsStack.top();
+                queryResultsStack.pop();
+
+                DocumentsVectorPointer tempResult = disjunct(tempResult1, tempResult2);
+                queryResultsStack.push(tempResult);
+            }
         }
         else
         {
@@ -101,16 +103,24 @@ std::vector<Hits> SearchEngine::search(const std::string &query)
     // Stack 에 남아 있는 결과를 AND 연산을 이용하여 교집합 한다
     if (!queryResultsStack.empty())
     {
-        DocumentsVectorPointer tempResult = queryResultsStack.top();
-        queryResultsStack.pop();
-
-        while (!queryResultsStack.empty())
+        if (queryResultsStack.size() > 1)
         {
-            tempResult = conjunct(tempResult, queryResultsStack.top());
+            DocumentsVectorPointer tempResult = queryResultsStack.top();
+            queryResultsStack.pop();
+
+            while (!queryResultsStack.empty())
+            {
+                tempResult = conjunct(tempResult, queryResultsStack.top());
+                queryResultsStack.pop();
+            }
+
+            searchResult = tempResult;
+        }
+        else
+        {
+            searchResult = queryResultsStack.top();
             queryResultsStack.pop();
         }
-
-        searchResult = tempResult;
     }
 
     // 검색 결과가 존재 한다면

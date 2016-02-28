@@ -14,7 +14,11 @@ std::vector<std::string> Utils::Tokenize(const std::string& str)
     while (!iss.eof())
     {
         iss >> temp;
-        tokens.push_back(temp);
+        if (!temp.empty())
+        {
+            tokens.push_back(temp);
+        }
+        temp.clear();
     }
 
     return tokens;

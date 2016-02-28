@@ -20,34 +20,46 @@ void QueryParser::setQuery(const std::string& query)
      * reverse polish notation (https://en.wikipedia.org/wiki/Reverse_Polish_notation) 을 이용,
      * 다음과 같은 형태로 연산을 변환한다.
      *
-     * ex> A OR ( B AND C ) -> B C AND A OR
+     * ex> A OR ( B AND C ) -> A B C AND OR
      */
     std::stack<std::string> stackToken;
+    std::stack<std::string> opToken;
 
     for (int i = 0; i < tokens.size(); i++)
     {
         if (tokens[i] == "(")
         {
-            stackToken.push(tokens[i]);
+            opToken.push(tokens[i]);
         }
         else if (tokens[i] == ")")
         {
-            while (!stackToken.empty() && stackToken.top() != "(")
+            while (opToken.top() != "(")
             {
-                mQueryTokens.push_back(stackToken.top());
-                stackToken.pop();
+                mQueryTokens.push_back(opToken.top());
+                opToken.pop();
             }
 
-            stackToken.pop();
+            opToken.pop();
         }
         else if (isOperator(tokens[i]))
         {
-            while (!stackToken.empty() && stackToken.top() != "(")
+//            while (!stackToken.empty() && !isOperator(stackToken.top()))
+//            {
+//                mQueryTokens.push_back(stackToken.top());
+//                stackToken.pop();
+//            }
+//            stackToken.push(tokens[i]);
+
+            if (!opToken.empty() && isOperator(opToken.top()))
             {
-                mQueryTokens.push_back(stackToken.top());
-                stackToken.pop();
+                mQueryTokens.push_back(opToken.top());
+                opToken.pop();
+                opToken.push(tokens[i]);
             }
-            stackToken.push(tokens[i]);
+            else
+            {
+                opToken.push(tokens[i]);
+            }
         }
         else
         {
@@ -57,18 +69,23 @@ void QueryParser::setQuery(const std::string& query)
         }
     }
 
+    while (!opToken.empty()) {
+        mQueryTokens.push_back(opToken.top());
+        opToken.pop();
+    }
+
     while(!stackToken.empty())
     {
         mQueryTokens.push_back(stackToken.top());
         stackToken.pop();
     }
 
-//    for (auto token : mQueryTokens)
-//    {
-//        std::cout << "Query token : " << token << " ";
-//    }
-//
-//    std::cout << std::endl;
+    for (auto token : mQueryTokens)
+    {
+        std::cout << token << " ";
+    }
+
+    std::cout << std::endl;
 }
 
 std::vector<std::string> QueryParser::getQueryTokens() const
