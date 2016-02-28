@@ -100,9 +100,9 @@ std::vector<Hits> SearchEngine::search(const std::string &query)
         }
     }
 
-    // Stack 에 남아 있는 결과를 AND 연산을 이용하여 교집합 한다
     if (!queryResultsStack.empty())
     {
+        // Stack 에 남아 있는 결과를 AND 연산을 이용하여 교집합 한다
         if (queryResultsStack.size() > 1)
         {
             DocumentsVectorPointer tempResult = queryResultsStack.top();

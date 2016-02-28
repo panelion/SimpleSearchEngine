@@ -94,3 +94,70 @@ The first chapter is a tutorial on the basic concepts of Go, introduced through 
 Early chapters cover the structural elements of Go programs: syntax, control flow, data types, and the organization of a program into packages, files, and functions. The examples illustrate many packages from the standard library and show how to create new ones of your own. Later chapters explain the package mechanism in more detail, and how to build, test, and maintain projects using the go tool.
 The chapters on methods and interfaces introduce Go's unconventional approach to object-oriented programming, in which methods can be declared on any type and interfaces are implicitly satisfied. They explain the key principles of encapsulation, composition, and substitutability using realistic examples.
 </contents>
+
+<id>12</id>
+<contents>
+Access 2016 Bible is your, comprehensive reference to the world's most popular database management tool. With clear guidance toward everything from the basics to the advanced, this go-to reference helps you take advantage of everything Access 2016 has to offer. Whether you're new to Access or getting started with Access 2016, you'll find everything you need to know to create the database solution perfectly tailored to your needs, with expert guidance every step of the way. The companion website features all examples and databases used in the book, plus trial software and a special offer from Database Creations. Start from the beginning for a complete tutorial, or dip in and grab what you need when you need it — this book gives you an expert Access 2016 companion on call 24/7.
+
+Access enables database novices and programmers to store, organize, view, analyze, and share data, as well as build powerful, integrable, custom database solutions — but databases can be complex, and difficult to navigate. This book helps you harness the power of the database with a solid understanding of their purpose, construction, and application.
+</contents>
+
+<id>13</id>
+<contents>
+Whether you are just starting out or an Excel novice, the Excel 2016 Bible is your comprehensive, go-to guide for all your Excel 2016 needs. Whether you use Excel at work or at home, you will be guided through the powerful new features and capabilities by expert author and Excel Guru John Walkenbach to take full advantage of what the updated version offers. Learn to incorporate templates, implement formulas, create pivot tables, analyze data, and much more.
+
+Navigate this powerful tool for business, home management, technical work, and much more with the only resource you need, Excel 2016 Bible.
+
+Whether you need a walkthrough tutorial or an easy-to-navigate desk reference, the Excel 2016 Bible has you covered with complete coverage and clear expert guidance.
+</contents>
+
+<id>14</id>
+<contents>
+Learning Swift 2 Programming is a fast-paced, hands-on introduction to writing production-quality iOS and OS X apps with Apple's programming language. Written for developers with experience in any modern language, this book explains Swift simply and clearly, using relevant examples that solve realistic problems.
+
+Author Jacob Schatz's popular YouTube video tutorials have already helped thousands of Apple developers get started with Swift. Now, he helps you take full advantage of Swift's advanced design, remarkable performance, and streamlined development techniques.
+
+Step by step, you'll move from basic syntax through advanced features such as closures and generics–discovering helpful tips and tricks along the way. After you've mastered Swift's building blocks and learned about its key innovations, a full section of case studies walks you through building complete apps from scratch.
+</contents>
+
+<id>15</id>
+<contents>
+Networked multiplayer games are a multibillion dollar business: some games now attract tens of millions of players. In this practical, code-rich guide, Joshua Glazer and Sanjay Madhav guide you through every aspect of engineering them. Drawing on their immense experience as both game developers and instructors, the authors lead you through building a robust multiplayer architecture, and creating every engine-level system. You'll learn through in-depth working code examples for two complete games: an action game and a real time strategy (RTS) game.
+First, Madhav and Glazer review the essentials of networking and network programming from the standpoint of game developers. Next, they walk through managing game data transmission, updating game objects across the network, and organizing the devices that join your game. You'll learn how to ensure reliable performance despite the Internet's inherent inconsistencies, and how to design game code for maximum security and scalability. The authors conclude by addressing two increasingly crucial issues: incorporating gamer services and hosting your games in the cloud.
+</contents>
+
+<id>16</id>
+<contents>
+COLUMBIA, S.C. — Hillary Clinton easily defeated her rival, Sen. Bernie Sanders, in the Democratic primary here Saturday, the first broad test of whether the strong challenge from Clinton’s political left has eroded crucial support among African American voters.
+
+With the victory in South Carolina, Clinton can claim a powerful advantage among black voters who could determine the outcome in a half-dozen Southern states that vote next.
+
+For Clinton, this was the first comfortable victory of a Democratic primary season that just a year ago was supposed to be comfortable from end to end, with Clinton waltzing through as a front-runner.
+</contents>
+
+<id>17</id>
+<contents>
+KENNESAW, Ga. — In the sprint to Super Tuesday, Marco Rubio is scrambling to parlay his newfound aggression against Donald Trump into enough support at the polls not to be overwhelmed by the suffocating effects of the celebrity mogul’s insurgent campaign.
+
+The result is that, rather than aiming to triumph on the biggest day of the Republican presidential nominating calendar, the candidate seen as the party establishment’s best and perhaps only chance of defeating Trump merely hopes to hang on.
+
+The delegate bonanza known as Super Tuesday, which features contests in 11 states and will award nearly half the number of delegates needed to claim the nomination, will test Rubio’s strategy of survival and the patience of his backers. The senator from Florida vowed here Saturday that he could lose all 15 of the first primaries and caucuses yet, because of the party’s delegate-allocation rules, still wrest the nomination from Trump at the summer convention.
+</contents>
+
+<id>18</id>
+<contents>
+Get up and running with OpenStack Swift, the free, open source solution for deploying high-performance object storage clusters at scale. In this practical guide, Joe Arnold, co-founder and CEO of SwiftStack, brings you up-to-speed on the basic concepts of object storage and walks you through what you need to know to plan, build, operate, and measure the performance of your own Swift storage system. Object storage is essential today with the growth of web, mobile, and software-as-a-service (SaaS) applications. This book helps you through the process, with separate sections on application development, installation, administration, and troubleshooting.
+</contents>
+
+<id>19</id>
+<contents>
+Swift is a new and powerful programming language that represents an essential new programming tool for iOS and OSX applications and builds upon the power of Objective-C while streamlining the developer experience. Swift Essentials is a fast-paced, practical guide showing you the quickest way to put Swift to work in the real world. It guides you concisely through the basics of syntax and development before pushing ahead to explore Swift's higher features through practical programming projects. By the end of the book, you will be able to use Xcode's graphical interface builder, create interactive applications, and communicate with network services.
+</contents>
+
+<id>20</id>
+<contents>
+Move into iOS development by getting a firm grasp of its fundamentals, including the Xcode IDE, the Cocoa Touch framework, and Swift - Apple's new programming language. With this thoroughly updated guide, you'll learn Swift's object-oriented concepts, understand how to use Apple's development tools, and discover how Cocoa provides the underlying functionality iOS apps need to have. Once you master the fundamentals, you'll be ready to tackle the details of iOS app development with author Matt Neuburg's companion guide, Programming iOS 8.
+</contents>
+
+
+

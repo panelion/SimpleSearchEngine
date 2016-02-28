@@ -80,12 +80,13 @@ void QueryParser::setQuery(const std::string& query)
         stackToken.pop();
     }
 
-    for (auto token : mQueryTokens)
-    {
-        std::cout << token << " ";
-    }
-
-    std::cout << std::endl;
+//    // for test
+//    for (auto token : mQueryTokens)
+//    {
+//        std::cout << token << " ";
+//    }
+//
+//    std::cout << std::endl;
 }
 
 std::vector<std::string> QueryParser::getQueryTokens() const
